@@ -1,11 +1,14 @@
 import {
   ImageSourcePropType,
+  Platform,
   requireNativeComponent,
   StyleProp,
   ViewStyle,
 } from 'react-native';
 const LongImageViewManager =
-  requireNativeComponent<LongImageViewProps>('LongImageView');
+  Platform.OS === 'android'
+    ? requireNativeComponent<LongImageViewProps>('LongImageView')
+    : null;
 
 export default LongImageViewManager;
 
