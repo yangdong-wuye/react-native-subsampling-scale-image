@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
+import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 
@@ -14,6 +15,7 @@ import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.davemorrissey.labs.subscaleview.ImageSource;
+import com.davemorrissey.labs.subscaleview.ImageViewState;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.SimpleViewManager;
