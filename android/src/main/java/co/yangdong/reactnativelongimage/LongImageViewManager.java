@@ -61,7 +61,7 @@ public class LongImageViewManager extends SimpleViewManager<SubsamplingScaleImag
 
                         @Override
                         public void onResourceReady(@NonNull Bitmap resource, @androidx.annotation.Nullable Transition<? super Bitmap> transition) {
-                            view.setImage(ImageSource.cachedBitmap(resource));
+                            view.setImage(ImageSource.cachedBitmap(resource), new ImageViewState(0, new PointF(0, 0), 0));
                         }
 
                         @Override
