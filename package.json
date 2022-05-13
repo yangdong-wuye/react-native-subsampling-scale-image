@@ -1,6 +1,6 @@
 {
   "name": "@wuye/react-native-long-image",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "react native subsampling-scale-image-view",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
