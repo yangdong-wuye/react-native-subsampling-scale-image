@@ -1,4 +1,4 @@
-package co.yangdong.reactnativelongimage;
+package co.yangdong.subsamplingscaleimage;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class LongImagePackage implements ReactPackage {
+public class SubsamplingScaleImagePackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         return Collections.emptyList();
@@ -17,6 +17,6 @@ public class LongImagePackage implements ReactPackage {
 
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
-        return Arrays.<ViewManager>asList(new LongImageViewManager());
+        return Arrays.<ViewManager>asList(new SubsamplingScaleImageViewManager());
     }
 }

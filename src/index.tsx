@@ -1,30 +1,101 @@
+import React, { Fragment } from 'react';
 import {
   ImageSourcePropType,
   Platform,
   requireNativeComponent,
   StyleProp,
+  StyleSheet,
+  View,
   ViewStyle,
 } from 'react-native';
-const LongImageViewManager =
-  Platform.OS === 'android'
-    ? requireNativeComponent<LongImageViewProps>('LongImageView')
-    : null;
 
-export default LongImageViewManager;
-
-export enum LongImageViewMinimumScale {
+export enum MinimumScaleType {
   SCALE_TYPE_CENTER_INSIDE = 1,
   SCALE_TYPE_CENTER_CROP = 2,
   SCALE_TYPE_CUSTOM = 3,
   SCALE_TYPE_START = 4,
 }
 
-export interface LongImageViewProps {
+export enum DoubleTapZoomStyle {
+  ZOOM_FOCUS_FIXED = 1,
+  ZOOM_FOCUS_CENTER = 2,
+  ZOOM_FOCUS_CENTER_IMMEDIATE = 3,
+}
+
+export interface OnLoadEvent {
+  nativeEvent: {
+    width: number;
+    height: number;
+  };
+}
+
+export interface SubsamplingScaleImageProps {
   style?: StyleProp<ViewStyle>;
   source: ImageSourcePropType;
   quickScaleEnabled?: boolean;
   zoomEnabled?: boolean;
   panEnabled?: boolean;
-  minimumScale?: LongImageViewMinimumScale;
-  children?: React.ReactNode | null;
+  eagerLoadingEnabled?: boolean;
+  minScale?: number;
+  maxScale?: number;
+  animateScale?: number;
+  animateCenter?: { x: number; y: number };
+  animateScaleAndCenter?: {
+    animateScale: number;
+    animateCenter: { x: number; y: number };
+  };
+  doubleTapZoomDpi?: number;
+  doubleTapZoomDuration?: number;
+  doubleTapZoomStyle?: DoubleTapZoomStyle;
+  minimumScaleType?: MinimumScaleType;
+  onLoadStart?: () => void;
+  onError?: () => void;
+  onLoad?: (event: OnLoadEvent) => void;
+  onLoadEnd?: () => void;
+  onLoadCleared?: () => void;
+  children?: React.ReactNode;
 }
+
+const SubsamplingScaleImageView: any =
+  Platform.OS === 'android'
+    ? requireNativeComponent('SubsamplingScaleImageView')
+    : null;
+
+export const SubsamplingScaleImage = React.forwardRef(
+  (props: SubsamplingScaleImageProps, ref: any) => {
+    const {
+      style,
+      onLoadStart,
+      onLoad,
+      onLoadEnd,
+      onError,
+      onLoadCleared,
+      children,
+      ...otherProps
+    } = props;
+    console.log('========>', SubsamplingScaleImageView);
+
+    return (
+      <View ref={ref} style={[styles.imageContainer, style]}>
+        <Fragment>
+          <SubsamplingScaleImageView
+            style={StyleSheet.absoluteFill}
+            onSubsamplingScaleImageLoadStart={onLoadStart}
+            onSubsamplingScaleImageLoadError={onError}
+            onSubsamplingScaleImageLoad={onLoad}
+            onSubsamplingScaleImageLoadEnd={onLoadEnd}
+            onSubsamplingScaleImageLoadCleared={onLoadCleared}
+            {...otherProps}
+          />
+          {children}
+        </Fragment>
+      </View>
+    );
+  }
+);
+
+const styles = StyleSheet.create({
+  imageContainer: {
+    overflow: 'hidden',
+  },
+});
