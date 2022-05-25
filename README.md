@@ -1,9 +1,7 @@
-# react-native-long-image
 
 [subsampling-scale-image-view](https://github.com/davemorrissey/subsampling-scale-image-view) react-native版，旨在解决android加载长图模糊问题
 
-## Preview
-![预览](https://github.com/yangdong-wuye/react-native-subsampling-scale-image/tree/master/doc/1653470214074879.gif?raw=true)
+<img src="https://github.com/yangdong-wuye/react-native-subsampling-scale-image/blob/master/doc/1653470214074879.gif" data-canonical-src="https://github.com/yangdong-wuye/react-native-subsampling-scale-image/blob/master/doc/1653470214074879.gif" width="200" height="434" />
 
 ## Installation
 
