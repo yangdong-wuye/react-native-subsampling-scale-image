@@ -75,16 +75,26 @@ export const SubsamplingScaleImage = React.forwardRef(
     } = props;
     console.log('========>', SubsamplingScaleImageView);
 
+    const _onLoadStart = () => !!onLoadStart && onLoadStart();
+
+    const _onError = () => !!onError && onError();
+
+    const _onLoad = (event: OnLoadEvent) => !!onLoad && onLoad(event);
+
+    const _onLoadEnd = () => !!onLoadEnd && onLoadEnd();
+
+    const _onLoadCleared = () => !!onLoadCleared && onLoadCleared();
+
     return (
       <View ref={ref} style={[styles.imageContainer, style]}>
         <Fragment>
           <SubsamplingScaleImageView
             style={StyleSheet.absoluteFill}
-            onSubsamplingScaleImageLoadStart={onLoadStart}
-            onSubsamplingScaleImageLoadError={onError}
-            onSubsamplingScaleImageLoad={onLoad}
-            onSubsamplingScaleImageLoadEnd={onLoadEnd}
-            onSubsamplingScaleImageLoadCleared={onLoadCleared}
+            onSubsamplingScaleImageLoadStart={_onLoadStart}
+            onSubsamplingScaleImageLoadError={_onError}
+            onSubsamplingScaleImageLoad={_onLoad}
+            onSubsamplingScaleImageLoadEnd={_onLoadEnd}
+            onSubsamplingScaleImageLoadCleared={_onLoadCleared}
             {...otherProps}
           />
           {children}
