@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import {
+  Image,
   ImageSourcePropType,
   Platform,
   requireNativeComponent,
@@ -65,6 +66,7 @@ export const SubsamplingScaleImage = React.forwardRef(
   (props: SubsamplingScaleImageProps, ref: any) => {
     const {
       style,
+      source,
       onLoadStart,
       onLoad,
       onLoadEnd,
@@ -83,12 +85,14 @@ export const SubsamplingScaleImage = React.forwardRef(
     const _onLoadEnd = () => !!onLoadEnd && onLoadEnd();
 
     const _onLoadCleared = () => !!onLoadCleared && onLoadCleared();
+    const resolveAssetSource = Image.resolveAssetSource(source);
 
     return (
       <View ref={ref} style={[styles.imageContainer, style]}>
         <Fragment>
           <SubsamplingScaleImageView
             style={StyleSheet.absoluteFill}
+            source={resolveAssetSource}
             onSubsamplingScaleImageLoadStart={_onLoadStart}
             onSubsamplingScaleImageLoadError={_onError}
             onSubsamplingScaleImageLoad={_onLoad}

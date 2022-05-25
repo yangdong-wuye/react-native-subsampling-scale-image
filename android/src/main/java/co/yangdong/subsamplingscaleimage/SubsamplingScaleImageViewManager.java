@@ -60,7 +60,7 @@ public class SubsamplingScaleImageViewManager extends SimpleViewManager<Subsampl
 
     @androidx.annotation.Nullable
     @Override
-    public Map<String, Object> getExportedCustomBubblingEventTypeConstants() {
+    public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
                 .put(REACT_ON_LOAD_START_EVENT, MapBuilder.of("registrationName", REACT_ON_LOAD_START_EVENT))
                 .put(REACT_ON_LOAD_ERROR_EVENT, MapBuilder.of("registrationName", REACT_ON_LOAD_ERROR_EVENT))
@@ -73,8 +73,10 @@ public class SubsamplingScaleImageViewManager extends SimpleViewManager<Subsampl
     @SuppressWarnings("unused")
     @ReactProp(name = "source")
     public void setSrc(SubsamplingScaleImageView view, @Nullable ReadableMap source) {
-        if (requestManager != null && source != null && source.hasKey("uri") && !TextUtils.isEmpty(source.getString("uri"))) {
-            requestManager.load(source.getString("uri"))
+        final SubsamplingScaleImageSource imageSource = SubsamplingScaleImageViewConverter.getImageSource(view.getContext(), source);
+
+        if (requestManager != null && imageSource.getUri().toString().length() != 0) {
+            requestManager.load(imageSource.getSourceForLoad())
                     .into(new CustomTarget<Bitmap>() {
                         @Override
                         public void onLoadStarted(@androidx.annotation.Nullable Drawable placeholder) {
