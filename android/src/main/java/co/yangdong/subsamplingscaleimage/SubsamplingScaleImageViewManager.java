@@ -69,8 +69,8 @@ public class SubsamplingScaleImageViewManager extends SimpleViewManager<Subsampl
                 .put(REACT_ON_LOAD_EVENT, MapBuilder.of("registrationName", REACT_ON_LOAD_EVENT))
                 .put(REACT_ON_LOAD_END_EVENT, MapBuilder.of("registrationName", REACT_ON_LOAD_END_EVENT))
                 .put(REACT_ON_LOAD_CLEARED_EVENT, MapBuilder.of("registrationName", REACT_ON_LOAD_CLEARED_EVENT))
-                .put(REACT_ON_SCALE_CHANGED_EVENT, MapBuilder.of("onScaleChanged", REACT_ON_SCALE_CHANGED_EVENT))
-                .put(REACT_ON_CENTER_CHANGED_EVENT, MapBuilder.of("onCenterChanged", REACT_ON_CENTER_CHANGED_EVENT))
+                .put(REACT_ON_SCALE_CHANGED_EVENT, MapBuilder.of("registrationName", REACT_ON_SCALE_CHANGED_EVENT))
+                .put(REACT_ON_CENTER_CHANGED_EVENT, MapBuilder.of("registrationName", REACT_ON_CENTER_CHANGED_EVENT))
                 .build();
     }
 
