@@ -73,7 +73,6 @@ export const SubsamplingScaleImage = React.forwardRef(
       children,
       ...otherProps
     } = props;
-    console.log('========>', SubsamplingScaleImageView);
 
     const _onLoadStart = () => !!onLoadStart && onLoadStart();
 
