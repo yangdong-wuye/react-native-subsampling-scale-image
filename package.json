@@ -1,6 +1,6 @@
 {
   "name": "@wuye/react-native-subsampling-scale-image",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "android subsampling scale image view",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
