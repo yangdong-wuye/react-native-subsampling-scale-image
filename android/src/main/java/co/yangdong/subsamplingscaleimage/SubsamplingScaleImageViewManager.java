@@ -39,6 +39,8 @@ public class SubsamplingScaleImageViewManager extends SimpleViewManager<Subsampl
     static final String REACT_ON_LOAD_EVENT = "onSubsamplingScaleImageLoad";
     static final String REACT_ON_LOAD_END_EVENT = "onSubsamplingScaleImageLoadEnd";
     static final String REACT_ON_LOAD_CLEARED_EVENT = "onSubsamplingScaleImageLoadCleared";
+    static final String REACT_ON_SCALE_CHANGED_EVENT = "onSubsamplingScaleImageScaleChanged";
+    static final String REACT_ON_CENTER_CHANGED_EVENT = "onSubsamplingScaleImageCenterChanged";
 
     @Nullable
     private RequestBuilder<Bitmap> requestManager = null;
@@ -67,6 +69,8 @@ public class SubsamplingScaleImageViewManager extends SimpleViewManager<Subsampl
                 .put(REACT_ON_LOAD_EVENT, MapBuilder.of("registrationName", REACT_ON_LOAD_EVENT))
                 .put(REACT_ON_LOAD_END_EVENT, MapBuilder.of("registrationName", REACT_ON_LOAD_END_EVENT))
                 .put(REACT_ON_LOAD_CLEARED_EVENT, MapBuilder.of("registrationName", REACT_ON_LOAD_CLEARED_EVENT))
+                .put(REACT_ON_SCALE_CHANGED_EVENT, MapBuilder.of("onScaleChanged", REACT_ON_SCALE_CHANGED_EVENT))
+                .put(REACT_ON_CENTER_CHANGED_EVENT, MapBuilder.of("onCenterChanged", REACT_ON_CENTER_CHANGED_EVENT))
                 .build();
     }
 
@@ -76,6 +80,33 @@ public class SubsamplingScaleImageViewManager extends SimpleViewManager<Subsampl
         final SubsamplingScaleImageSource imageSource = SubsamplingScaleImageViewConverter.getImageSource(view.getContext(), source);
 
         if (requestManager != null && imageSource.getUri().toString().length() != 0) {
+            view.setOnStateChangedListener(new SubsamplingScaleImageView.OnStateChangedListener() {
+                @Override
+                public void onScaleChanged(float newScale, int origin) {
+                    WritableMap event = Arguments.createMap();
+                    event.putDouble("newScale", newScale);
+                    event.putDouble("origin", origin);
+                    ReactContext reactContext = (ReactContext) view.getContext();
+                    int viewId = view.getId();
+                    reactContext.getJSModule(RCTEventEmitter.class)
+                            .receiveEvent(viewId, REACT_ON_SCALE_CHANGED_EVENT, event);
+                }
+
+                @Override
+                public void onCenterChanged(PointF newCenter, int origin) {
+                    WritableMap event = Arguments.createMap();
+                    WritableMap center = Arguments.createMap();
+                    center.putDouble("x", newCenter.x);
+                    center.putDouble("y", newCenter.y);
+                    event.putMap("newCenter", center);
+                    event.putDouble("origin", origin);
+                    ReactContext reactContext = (ReactContext) view.getContext();
+                    int viewId = view.getId();
+                    reactContext.getJSModule(RCTEventEmitter.class)
+                            .receiveEvent(viewId, REACT_ON_CENTER_CHANGED_EVENT, event);
+                }
+            });
+
             requestManager.load(imageSource.getSourceForLoad())
                     .into(new CustomTarget<Bitmap>() {
                         @Override

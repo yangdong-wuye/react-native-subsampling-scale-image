@@ -30,6 +30,20 @@ export interface OnLoadEvent {
   };
 }
 
+export interface OnScaleChangedEvent {
+  nativeEvent: {
+    newScale: number;
+    origin: number;
+  };
+}
+
+export interface OnCenterChangedEvent {
+  nativeEvent: {
+    newCenter: { x: number; y: number };
+    origin: number;
+  };
+}
+
 export interface SubsamplingScaleImageProps {
   style?: StyleProp<ViewStyle>;
   source: ImageSourcePropType;
@@ -54,6 +68,8 @@ export interface SubsamplingScaleImageProps {
   onLoad?: (event: OnLoadEvent) => void;
   onLoadEnd?: () => void;
   onLoadCleared?: () => void;
+  onScaleChanged?: (event: OnScaleChangedEvent) => void;
+  onCenterChanged?: (event: OnCenterChangedEvent) => void;
   children?: React.ReactNode;
 }
 
@@ -72,19 +88,22 @@ export const SubsamplingScaleImage = React.forwardRef(
       onLoadEnd,
       onError,
       onLoadCleared,
+      onScaleChanged,
+      onCenterChanged,
       children,
       ...otherProps
     } = props;
 
     const _onLoadStart = () => !!onLoadStart && onLoadStart();
-
     const _onError = () => !!onError && onError();
-
     const _onLoad = (event: OnLoadEvent) => !!onLoad && onLoad(event);
-
     const _onLoadEnd = () => !!onLoadEnd && onLoadEnd();
-
     const _onLoadCleared = () => !!onLoadCleared && onLoadCleared();
+    const _onScaleChanged = (event: OnScaleChangedEvent) =>
+      !!onScaleChanged && onScaleChanged(event);
+    const _onCenterChanged = (event: OnCenterChangedEvent) =>
+      !!onCenterChanged && onCenterChanged(event);
+
     const resolveAssetSource = Image.resolveAssetSource(source);
 
     return (
@@ -98,6 +117,8 @@ export const SubsamplingScaleImage = React.forwardRef(
             onSubsamplingScaleImageLoad={_onLoad}
             onSubsamplingScaleImageLoadEnd={_onLoadEnd}
             onSubsamplingScaleImageLoadCleared={_onLoadCleared}
+            onSubsamplingScaleImageScaleChanged={_onScaleChanged}
+            onSubsamplingScaleImageCenterChanged={_onCenterChanged}
             {...otherProps}
           />
           {children}
