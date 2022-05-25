@@ -13,6 +13,7 @@
     "android",
     "ios",
     "cpp",
+    "!doc",
     "!android/build",
     "!ios/build",
     "!**/__tests__",
