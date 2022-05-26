@@ -4,7 +4,7 @@
 <img src="https://github.com/yangdong-wuye/react-native-subsampling-scale-image/blob/master/doc/1653470214074879.gif" data-canonical-src="https://github.com/yangdong-wuye/react-native-subsampling-scale-image/blob/master/doc/1653470214074879.gif" width="200" height="434" />
 
 ## Installation
-
+```bash
 npm install @wuye/react-native-subsampling-scale-image
 yarn add @wuye/react-native-subsampling-scale-image
 ```
