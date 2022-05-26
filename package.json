@@ -30,7 +30,7 @@
   },
   "keywords": [
     "react-native",
-    "android"
+    "android",
     "subsampling-scale-image"
   ],
   "repository": "https://github.com/yangdong-wuye/react-native-subsampling-scale-image",
