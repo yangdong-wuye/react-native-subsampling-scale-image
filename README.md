@@ -1,11 +1,12 @@
 
-[subsampling-scale-image-view](https://github.com/davemorrissey/subsampling-scale-image-view) react-native版，旨在解决android加载长图模糊问题
+[subsampling-scale-image-view](https://github.com/davemorrissey/subsampling-scale-image-view) react-native版，用于解决android加载长图模糊问题
 
 <img src="https://github.com/yangdong-wuye/react-native-subsampling-scale-image/blob/master/doc/1653470214074879.gif" data-canonical-src="https://github.com/yangdong-wuye/react-native-subsampling-scale-image/blob/master/doc/1653470214074879.gif" width="200" height="434" />
 
 ## Installation
 ```bash
 npm install @wuye/react-native-subsampling-scale-image
+
 yarn add @wuye/react-native-subsampling-scale-image
 ```
 
@@ -18,7 +19,7 @@ import { SubsamplingScaleImage } from "@wuye/react-native-subsampling-scale-imag
 
 <SubsamplingScaleImage
   zoomEnabled
-  panEnabled={true}
+  panEnabled
   quickScaleEnabled
   maxScale={3}
   minScale={1}
