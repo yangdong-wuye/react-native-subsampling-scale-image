@@ -7,9 +7,9 @@ import com.bumptech.glide.load.model.LazyHeaders;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
 
-public class SubsamplingScaleImageViewConverter {
-    static SubsamplingScaleImageSource getImageSource(Context context, ReadableMap source) {
-        return new SubsamplingScaleImageSource(context, source.getString("uri"), getHeaders(source));
+public class ImageSourceConverter {
+    static ImageSource getImageSource(Context context, ReadableMap source) {
+        return new ImageSource(context, source.getString("uri"), getHeaders(source));
     }
 
     static Headers getHeaders(ReadableMap source) {

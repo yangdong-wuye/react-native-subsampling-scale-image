@@ -6,17 +6,14 @@ import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
-import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
-import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.target.CustomViewTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.ImageViewState;
-import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
@@ -76,8 +73,8 @@ public class SubsamplingScaleImageViewManager extends SimpleViewManager<Subsampl
 
     @SuppressWarnings("unused")
     @ReactProp(name = "source")
-    public void setSrc(SubsamplingScaleImageView view, @Nullable ReadableMap source) {
-        final SubsamplingScaleImageSource imageSource = SubsamplingScaleImageViewConverter.getImageSource(view.getContext(), source);
+    public void setSrc(SubsamplingScaleImageView view, @NonNull ReadableMap source) {
+        final ImageSource imageSource = ImageSourceConverter.getImageSource(view.getContext(), source);
 
         if (requestManager != null && imageSource.getUri().toString().length() != 0) {
             view.setOnStateChangedListener(new SubsamplingScaleImageView.OnStateChangedListener() {
@@ -108,10 +105,18 @@ public class SubsamplingScaleImageViewManager extends SimpleViewManager<Subsampl
             });
 
             requestManager.load(imageSource.getSourceForLoad())
-                    .into(new CustomTarget<Bitmap>() {
+                    .into(new CustomViewTarget<SubsamplingScaleImageView, Bitmap>(view) {
                         @Override
-                        public void onLoadStarted(@androidx.annotation.Nullable Drawable placeholder) {
-                            super.onLoadStarted(placeholder);
+                        protected void onResourceCleared(@androidx.annotation.Nullable Drawable placeholder) {
+                            ReactContext reactContext = (ReactContext) view.getContext();
+                            int viewId = view.getId();
+                            reactContext.getJSModule(RCTEventEmitter.class)
+                                    .receiveEvent(viewId, REACT_ON_LOAD_CLEARED_EVENT, new WritableNativeMap());
+                        }
+
+                        @Override
+                        protected void onResourceLoading(@androidx.annotation.Nullable Drawable placeholder) {
+                            super.onResourceLoading(placeholder);
                             ReactContext reactContext = (ReactContext) view.getContext();
                             int viewId = view.getId();
                             reactContext.getJSModule(RCTEventEmitter.class)
@@ -120,7 +125,6 @@ public class SubsamplingScaleImageViewManager extends SimpleViewManager<Subsampl
 
                         @Override
                         public void onLoadFailed(@androidx.annotation.Nullable Drawable errorDrawable) {
-                            super.onLoadFailed(errorDrawable);
                             ReactContext reactContext = (ReactContext) view.getContext();
                             int viewId = view.getId();
                             reactContext.getJSModule(RCTEventEmitter.class)
@@ -131,7 +135,9 @@ public class SubsamplingScaleImageViewManager extends SimpleViewManager<Subsampl
 
                         @Override
                         public void onResourceReady(@NonNull Bitmap resource, @androidx.annotation.Nullable Transition<? super Bitmap> transition) {
-                            view.setImage(ImageSource.cachedBitmap(resource), new ImageViewState(0, new PointF(0, 0), 0));
+                            view.setVisibleAnimation();
+                            view.setImage(com.davemorrissey.labs.subscaleview.ImageSource.cachedBitmap(resource),
+                                    new ImageViewState(0, new PointF(0, 0), 0));
                             WritableMap event = Arguments.createMap();
                             event.putDouble("width", resource.getWidth());
                             event.putDouble("height", resource.getHeight());
@@ -141,14 +147,6 @@ public class SubsamplingScaleImageViewManager extends SimpleViewManager<Subsampl
                                     .receiveEvent(viewId, REACT_ON_LOAD_EVENT, event);
                             reactContext.getJSModule(RCTEventEmitter.class)
                                     .receiveEvent(viewId, REACT_ON_LOAD_END_EVENT, new WritableNativeMap());
-                        }
-
-                        @Override
-                        public void onLoadCleared(@androidx.annotation.Nullable Drawable placeholder) {
-                            ReactContext reactContext = (ReactContext) view.getContext();
-                            int viewId = view.getId();
-                            reactContext.getJSModule(RCTEventEmitter.class)
-                                    .receiveEvent(viewId, REACT_ON_LOAD_CLEARED_EVENT, new WritableNativeMap());
                         }
                     });
         }
@@ -167,6 +165,18 @@ public class SubsamplingScaleImageViewManager extends SimpleViewManager<Subsampl
     }
 
     @SuppressWarnings("unused")
+    @ReactProp(name = "orientation")
+    public void setOrientation(SubsamplingScaleImageView view, int orientation) {
+        view.setOrientation(orientation);
+    }
+
+    @SuppressWarnings("unused")
+    @ReactProp(name = "panLimit")
+    public void setPanLimit(SubsamplingScaleImageView view, int panLimit) {
+        view.setPanLimit(panLimit);
+    }
+
+    @SuppressWarnings("unused")
     @ReactProp(name = "minScale")
     public void setMinScale(SubsamplingScaleImageView view, int minScale) {
         view.setMinScale(minScale);
@@ -182,6 +192,18 @@ public class SubsamplingScaleImageViewManager extends SimpleViewManager<Subsampl
     @ReactProp(name = "minimumScaleType")
     public void setMinimumScaleType(SubsamplingScaleImageView view, int minimumScaleType) {
         view.setMinimumScaleType(minimumScaleType);
+    }
+
+    @SuppressWarnings("unused")
+    @ReactProp(name = "minimumDpi")
+    public void setMinimumDpi(SubsamplingScaleImageView view, int minimumDpi) {
+        view.setMinimumDpi(minimumDpi);
+    }
+
+    @SuppressWarnings("unused")
+    @ReactProp(name = "maximumDpi")
+    public void setMaximumDpi(SubsamplingScaleImageView view, int maximumDpi) {
+        view.setMaximumDpi(maximumDpi);
     }
 
     @SuppressWarnings("unused")

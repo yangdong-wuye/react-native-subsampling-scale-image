@@ -7,11 +7,10 @@ import android.text.TextUtils;
 
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.Headers;
-import com.facebook.react.views.imagehelper.ImageSource;
 
 import javax.annotation.Nullable;
 
-public class SubsamplingScaleImageSource extends ImageSource {
+public class ImageSource extends com.facebook.react.views.imagehelper.ImageSource {
     private static final String DATA_SCHEME = "data";
     private static final String LOCAL_RESOURCE_SCHEME = "res";
     private static final String ANDROID_RESOURCE_SCHEME = "android.resource";
@@ -40,15 +39,15 @@ public class SubsamplingScaleImageSource extends ImageSource {
         return LOCAL_FILE_SCHEME.equals(uri.getScheme());
     }
 
-    public SubsamplingScaleImageSource(Context context, String source) {
+    public ImageSource(Context context, String source) {
         this(context, source, null);
     }
 
-    public SubsamplingScaleImageSource(Context context, String source, @Nullable Headers headers) {
+    public ImageSource(Context context, String source, @Nullable Headers headers) {
         this(context, source, 0.0d, 0.0d, headers);
     }
 
-    public SubsamplingScaleImageSource(Context context, String source, double width, double height, @Nullable Headers headers) {
+    public ImageSource(Context context, String source, double width, double height, @Nullable Headers headers) {
         super(context, source, width, height);
         mHeaders = headers == null ? Headers.DEFAULT : headers;
         mUri = super.getUri();
@@ -66,19 +65,19 @@ public class SubsamplingScaleImageSource extends ImageSource {
 
 
     public boolean isBase64Resource() {
-        return mUri != null && SubsamplingScaleImageSource.isBase64Uri(mUri);
+        return mUri != null && ImageSource.isBase64Uri(mUri);
     }
 
     public boolean isResource() {
-        return mUri != null && SubsamplingScaleImageSource.isResourceUri(mUri);
+        return mUri != null && ImageSource.isResourceUri(mUri);
     }
 
     public boolean isLocalFile() {
-        return mUri != null && SubsamplingScaleImageSource.isLocalFileUri(mUri);
+        return mUri != null && ImageSource.isLocalFileUri(mUri);
     }
 
     public boolean isContentUri() {
-        return mUri != null && SubsamplingScaleImageSource.isContentUri(mUri);
+        return mUri != null && ImageSource.isContentUri(mUri);
     }
 
     public Object getSourceForLoad() {
